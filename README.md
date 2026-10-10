@@ -48,6 +48,8 @@ nvim を開き直して `:checkhealth daihon` を打ちます。✅ が並べば
 
 ![書き出した縦書きの PDF](doc/images/pdf.png)
 
+Google ドキュメントや Word で渡したいときは、`:dh md`（Markdown）か `:dh docx`（Word）を打ちます。`.md` は Google ドライブに置くと、Google ドキュメントでそのまま開けます。どちらも何も入れずに作れます。
+
 `daihon.lua` があるフォルダの `.txt` だけが台本になります。ほかのメモには反応しません。
 
 ### 台本の書き方

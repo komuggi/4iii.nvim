@@ -53,7 +53,7 @@ vim.api.nvim_create_autocmd("WinResized", {
   end,
 })
 
--- :Dh pdf / html / count / pick / toggle
+-- :Dh pdf / html / md / docx / count / pick / toggle
 vim.api.nvim_create_user_command("Dh", function(o)
   require("daihon").command(o.args)
 end, {
@@ -65,7 +65,7 @@ end, {
       return n:find(lead, 1, true) == 1
     end, names)
   end,
-  desc = "daihon：pdf / html / count / pick / toggle",
+  desc = "daihon：pdf / html / md / docx / count / pick / toggle",
 })
 
 -- 小文字の :dh でも打てるように（nvim のコマンドは大文字始まりの決まりなので、行の頭の dh だけ Dh に置き換える）

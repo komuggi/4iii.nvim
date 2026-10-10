@@ -511,7 +511,19 @@ M.toggle = with_state(blocks.toggle)
 M.pick = with_state(blocks.pick)
 M.hover = with_state(blocks.hover)
 
---- :Dh pdf / :Dh html — 台本を PDF と HTML に書き出す（what = "pdf" | "html"）
+--- 書き出したものをファイルに書く（バイト列のまま）
+local function write_file(path, data)
+  local f, err = io.open(path, "wb")
+  if not f then
+    vim.notify("daihon: 書き出せませんでした：" .. tostring(err), vim.log.levels.ERROR)
+    return false
+  end
+  f:write(data)
+  f:close()
+  return true
+end
+
+--- :Dh pdf / html / md / docx — 台本を書き出す（what = "pdf" | "html" | "md" | "docx"）
 function M.export(what, buf)
   buf = buf or vim.api.nvim_get_current_buf()
   local st = bufs[buf]
@@ -526,7 +538,7 @@ function M.export(what, buf)
   local summary = count.summary(records, context(st))
 
   local css
-  if pdf.css then
+  if pdf.css and (what == "pdf" or what == "html") then
     local path = vim.fs.joinpath(st.root, pdf.css)
     if vim.fn.filereadable(path) == 0 then
       vim.notify("daihon: CSS が見つかりません：" .. path, vim.log.levels.ERROR)
@@ -558,10 +570,13 @@ function M.export(what, buf)
   if pdf.both then
     variants[#variants + 1] = { "ト書きなし", false }
   end
+  -- PDF は HTML を作ってから Vivliostyle で PDF にする
+  local make = ({ md = export.markdown, docx = require("daihon.docx").build })[what] or export.build
+  local ext = (what == "md" or what == "docx") and what or "html"
 
   for _, v in ipairs(variants) do
     local name = base .. "_" .. v[1]
-    local html, missing = export.build(records, cfg, {
+    local data, missing = make(records, cfg, {
       togaki = v[2],
       title = name,
       css = css,
@@ -573,13 +588,15 @@ function M.export(what, buf)
     for _, m in ipairs(missing) do
       missing_all[m] = true
     end
-    local html_path = vim.fs.joinpath(out_dir, name .. ".html")
-    vim.fn.writefile(vim.split(html, "\n", { plain = true }), html_path)
+    local path = vim.fs.joinpath(out_dir, name .. "." .. ext)
+    if not write_file(path, data) then
+      return
+    end
 
-    if what == "html" then
-      vim.notify("daihon: 書き出しました：" .. rel(html_path))
+    if what == "pdf" then
+      jobs[#jobs + 1] = { name = name, html = path, pdf = vim.fs.joinpath(out_dir, name .. ".pdf") }
     else
-      jobs[#jobs + 1] = { name = name, html = html_path, pdf = vim.fs.joinpath(out_dir, name .. ".pdf") }
+      vim.notify("daihon: 書き出しました：" .. rel(path))
     end
   end
 
@@ -635,6 +652,12 @@ M.commands = {
   end,
   html = function()
     M.export("html")
+  end,
+  md = function()
+    M.export("md")
+  end,
+  docx = function()
+    M.export("docx")
   end,
   count = function()
     M.show_count()

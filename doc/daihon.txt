@@ -24,7 +24,7 @@
     ├── daihon.lua      作品ごとの設定（return {} だけでもよい）
     ├── 台本.txt         台本。見出しで区切って1ファイルに書く
     ├── parts/          塊（{名前}）の中身
-    └── out/            書き出した PDF
+    └── out/            書き出した PDF・.md・.docx
 <
 
 全部の作品に効く設定は |daihon.setup()| に、作品ごとの設定はその作品の
@@ -179,6 +179,19 @@ HTML だけを作ります。PDF を作るには Vivliostyle CLI が要ります
     .t-指示 { color: gray; }
 <
 
+Google ドキュメント・Word で渡すとき                      *daihon-export-md*
+
+`:dh md` で Markdown（`.md`）、`:dh docx` で Word（`.docx`）を、PDF と同じ
+`out/` に書き出します。ト書きあり／なし・見出しの文字数・`{名前}` の中身・
+メモを出さない決まりは PDF と同じです（`both = false` なら、ト書きありだけ）。
+どちらも外の道具は使いません。
+
+- `.md` は横書きです。Google ドライブに置くと、Google ドキュメントでそのまま
+  開いて、コメントや共同編集ができます。ト書きは斜体、話す人の名前は太字です
+- `.docx` は `export.pdf` の縦書き・紙・余白・字・字下げ・改ページ・ページ
+  番号に合わせます。セリフ・ト書き・指示は Word のスタイルなので、受け取った
+  人が Word で見た目を変えられます。`export.pdf.css` は使いません
+
 ==============================================================================
 6. コマンドとキー                                            *daihon-commands*
 
@@ -188,6 +201,8 @@ HTML だけを作ります。PDF を作るには Vivliostyle CLI が要ります
 
     `:dh pdf`       PDF に書き出す
     `:dh html`      HTML だけ書き出す
+    `:dh md`        Markdown に書き出す（Google ドキュメントで開く用）
+    `:dh docx`      Word に書き出す
     `:dh count`     文字数の一覧
     `:dh pick`      塊の一覧から差し込む
     `:dh toggle`    塊を開く／閉じる
@@ -258,7 +273,7 @@ HTML だけを作ります。PDF を作るには Vivliostyle CLI が要ります
         dir = "out",
         pdf = {
           vertical = true,         -- false で横書き
-          both = true,             -- ト書きなしも出す
+          both = true,             -- ト書きなしも出す（md・docx も）
           size = "A4 landscape",
           margin = "20mm",
           font = '"BIZ UDPMincho", "BIZ UDP明朝 Medium", "Hiragino Mincho ProN", serif',
@@ -301,6 +316,6 @@ HTML だけを作ります。PDF を作るには Vivliostyle CLI が要ります
   られます。`daihon.lua` に書いても無視します
 - `parts_dir`・`export.dir`・`export.pdf.css` は作品フォルダの中しか指せません
 - 通信はしません。PDF は、入れておいた `vivliostyle` を、シェルを通さずに
-  呼ぶだけです
+  呼ぶだけです。`.md`・`.docx` は daihon の中だけで作ります
 
  vim:tw=78:ts=8:ft=help:norl:
