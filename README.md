@@ -56,16 +56,6 @@ Google ドキュメントや Word で渡したいときは、`:dh md`（Markdown
 
 ```text
 # 本編
-
-## nvim 無しで使う（js/）
-
-Google ドキュメントや Word で書いた台本も、同じ縦書きの PDF にできます。中身は daihon と同じ決まりの JavaScript です（作る HTML は daihon と1文字も違いません）。
-
-- **ブラウザ**：`js/web/index.html` を開き、台本を貼る →「印刷して PDF に」
-- **CLI**（Node 20 以上）：`node js/bin/daihon-pdf.js 台本.txt`（設定は同じフォルダの `daihon.json`。vivliostyle があれば PDF まで作ります）
-
-くわしくは [js/README.md](js/README.md)。
-
 ## Track 01 行の種類
 
 (この行は場面。ト書きありの PDF にだけ出ます)
@@ -113,6 +103,15 @@ Google ドキュメントや Word で書いた台本も、同じ縦書きの PDF
 上の画像は、`※` で始まる行を「注意」という種類として足した例です。下の `daihon.lua` に1行足すと、上の台本の `※` の行に色が付き、文字数から外れます。`line_types` は丸ごと置き換わるので、足すときは既定の4つも一緒に書きます。
 
 動く例は [examples/sample](examples/sample) にあります。台本の中のメモに、どの設定で何が変わるかを書いてあります。全部の設定は `:h daihon-config` で見られます。
+
+## nvim 無しで使う（js/）
+
+Google ドキュメントや Word で書いた台本も、同じ縦書きの PDF にできます。中身は daihon と同じ決まりの JavaScript です（作る HTML は daihon と1文字も違いません）。
+
+- **ブラウザ**：`js/web/index.html` を開き、台本を貼る →「印刷して PDF に」
+- **CLI**（Node 20 以上）：`node js/bin/daihon-pdf.js 台本.txt`（設定は同じフォルダの `daihon.json`。vivliostyle があれば PDF まで作ります）
+
+くわしくは [js/README.md](js/README.md)。
 
 ## もっと詳しく
 
