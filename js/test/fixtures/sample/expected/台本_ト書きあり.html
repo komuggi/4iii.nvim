@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>台本_ト書きあり</title>
+<style>
+@page { size: A4 landscape; margin: 20mm; @bottom-center { content: counter(page); font-size: 9pt; writing-mode: horizontal-tb; } }
+html {
+  writing-mode: vertical-rl;
+  font-family: "BIZ UDPMincho", "BIZ UDP明朝 Medium", "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+  font-size: 12pt;
+  line-height: 1.8;
+}
+body { margin: 0; }
+p { margin: 0; }
+h1 { font-size: 1.6em; margin-block: 0 1em; }
+h2 { font-size: 1.25em; margin-block: 1em; }
+.new-page { break-before: page; }
+.new-page + .new-page, body > .new-page:first-child { break-before: auto; }
+.gap { block-size: 0; margin-block-end: 1em; }
+.serifu { padding-inline-start: 3em; }
+.t-指示 { font-size: 0.9em; color: #555; }
+.speaker { font-weight: bold; }
+.tcy { text-combine-upright: all; }
+.count-list { margin-block: 1em; }
+.count-total { font-weight: bold; }
+
+</style>
+</head>
+<body>
+<h1 class="new-page">仕様書</h1>
+<div class="count-list">
+<p class="count-row">Track <span class="tcy">01</span> 行の種類 : 137文字</p>
+<p class="count-row">Track <span class="tcy">02</span> 範囲と入れ子 : 195文字</p>
+<p class="count-row">Track <span class="tcy">03</span> 塊 : <span class="tcy">86</span>文字</p>
+<p class="count-total">合計 : 418文字</p>
+</div>
+<h1 class="new-page">本編</h1>
+<h2 class="new-page">Track <span class="tcy">01</span> 行の種類 : 137文字</h2>
+<p class="t-場面">(この行は場面。ト書きありの PDF にだけ出ます)</p>
+<p class="t-指示">// この行は指示。ト書きありの PDF にだけ出ます</p>
+<p class="t-指示">// SE : ドアが開く</p>
+<p class="t-位置">【この行は位置。ト書きありの PDF にだけ出ます】</p>
+<p class="t-注意">※この行は daihon.lua で足した種類。ト書きありの PDF にだけ出ます</p>
+<p class="gap"></p>
+<p class="serifu">記号で始まらない行は、全部セリフです</p>
+<p class="serifu">セリフは、ト書きあり・なしの両方に出ます</p>
+<p class="serifu">文字数に入るのは、セリフだけです</p>
+<p class="gap"></p>
+<p class="serifu">空いた行は、PDF でも空きになります</p>
+<p class="gap"></p>
+<p class="serifu">何行空けても、空きは<span class="tcy">1</span>つです……</p>
+<p class="serifu">「…」は数えない設定にしています</p>
+<p class="serifu">この行は三十文字を超えているので、画面に長いセリフだという知らせが出ます</p>
+<h2 class="new-page">Track <span class="tcy">02</span> 範囲と入れ子 : 195文字</h2>
+<p class="t-範囲">◀右・近</p>
+<p class="serifu">ここから ▲ の行までが、ひとつの範囲です</p>
+<p class="serifu">画面では、範囲の中の行の左に縦の線が出ます</p>
+<p class="t-範囲">◀ささやき</p>
+<p class="serifu">範囲の中に、もうひとつ範囲を入れられます</p>
+<p class="serifu">ここは線が<span class="tcy">2</span>本。右・近で、ささやき</p>
+<p class="t-範囲">▶ささやき</p>
+<p class="serifu">ささやきを閉じたので、線は<span class="tcy">1</span>本に戻ります</p>
+<p class="t-範囲">▶右・近</p>
+<p class="gap"></p>
+<p class="serifu">縦書きの PDF では、▼ は ◀、▲ は ▶ になります</p>
+<p class="serifu">ト書きなしの PDF では、▼ と ▲ の行は消えます</p>
+<p class="gap"></p>
+<p class="t-指示">// ◀左・遠</p>
+<p class="serifu">指示の // のあとに書いても範囲になります</p>
+<p class="t-場面">(◀歩きながら)</p>
+<p class="serifu">場面のかっこの中にも書けます</p>
+<p class="t-指示">// ▶左・遠</p>
+<p class="serifu">範囲は重ねてよく、閉じる順番は問いません</p>
+<p class="t-場面">(▶歩きながら)</p>
+<h2 class="new-page">Track <span class="tcy">03</span> 塊 : <span class="tcy">86</span>文字</h2>
+<p class="serifu">次の行は塊。PDF では中身に置き換わります</p>
+<p class="serifu">ここからは、parts/いつもの.txt の中身です</p>
+<p class="t-指示">// 塊の中の指示も、ト書きありの PDF にだけ出ます</p>
+<p class="serifu">同じ文を、どのトラックでも使い回せます</p>
+<p class="serifu">閉じたままでも、塊の中身は文字数に入ります</p>
+</body>
+</html>

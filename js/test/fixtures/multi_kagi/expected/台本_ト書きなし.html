@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>台本_ト書きなし</title>
+<style>
+@page { size: A4 landscape; margin: 20mm; @bottom-center { content: counter(page); font-size: 9pt; writing-mode: horizontal-tb; } }
+html {
+  writing-mode: vertical-rl;
+  font-family: "BIZ UDPMincho", "BIZ UDP明朝 Medium", "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+  font-size: 12pt;
+  line-height: 1.8;
+}
+body { margin: 0; }
+p { margin: 0; }
+h1 { font-size: 1.6em; margin-block: 0 1em; }
+h2 { font-size: 1.25em; margin-block: 1em; }
+.new-page { break-before: page; }
+.new-page + .new-page, body > .new-page:first-child { break-before: auto; }
+.gap { block-size: 0; margin-block-end: 1em; }
+.serifu { padding-inline-start: 3em; }
+.t-指示 { font-size: 0.9em; color: #555; }
+.speaker { font-weight: bold; }
+.tcy { text-combine-upright: all; }
+.count-list { margin-block: 1em; }
+.count-total { font-weight: bold; }
+
+</style>
+</head>
+<body>
+<div class="count-list">
+<p class="count-row">Track <span class="tcy">1</span> はじめ : <span class="tcy">80</span>文字</p>
+<p class="count-row">Track <span class="tcy">2</span> : <span class="tcy">8</span>文字</p>
+<p class="count-total">合計 : <span class="tcy">88</span>文字</p>
+</div>
+<h1 class="new-page">本編</h1>
+<h2 class="new-page">Track <span class="tcy">1</span> はじめ : <span class="tcy">80</span>文字</h2>
+<p class="serifu">### 小見出し</p>
+<p class="serifu"><span class="speaker">妹</span>「おかえり」</p>
+<p class="serifu"><span class="speaker">姉</span>「遅かったね <span class="tcy">10</span>時だよ」</p>
+<p class="serifu">「名前なしのかぎ」</p>
+<p class="serifu"><span class="speaker">妹</span>「閉じなし</p>
+<p class="serifu">&lt;b&gt;&amp;&quot;タグ&quot;&lt;/b&gt;</p>
+<p class="serifu"><span class="speaker">妹</span>「またね」</p>
+<p class="serifu">またね</p>
+<h2 class="new-page">塊の中の見出し <span class="tcy">3</span></h2>
+<p class="serifu">おかえり</p>
+<p class="serifu">またまたねね</p>
+<p class="serifu">{ない}</p>
+<p class="serifu">  {ない}</p>
+<p class="serifu">}}</p>
+<p class="serifu">中の行</p>
+<p class="serifu">x{またね}y</p>
+<p class="serifu">またね</p>
+<h2 class="new-page">Track <span class="tcy">2</span> : <span class="tcy">8</span>文字</h2>
+<p class="serifu">{自分}</p>
+<p class="gap"></p>
+<p class="serifu">タブの行</p>
+<p class="serifu"><span class="speaker">ア</span>「100%」</p>
+</body>
+</html>

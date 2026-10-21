@@ -1,0 +1,1 @@
+{"ranges":{"open":"<<","close":">>","in_types":["指示"]},"count":{"include":["セリフ","指示"],"ignore_chars":"…、。"},"export":{"pdf":{"vertical_marks":{"open":"↓"},"both":false}}}

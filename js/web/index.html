@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>縦書き台本</title>
+<link rel="icon" href="data:,">
+<style>
+:root {
+  --bg: #f4f3ef;
+  --panel: #ffffff;
+  --ink: #222;
+  --muted: #6b6b6b;
+  --line: #d9d6cc;
+  --accent: #8a3b2e;
+  --warn: #9a6400;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1d1c1a;
+    --panel: #262522;
+    --ink: #e8e6e1;
+    --muted: #a19e96;
+    --line: #3d3b36;
+    --accent: #e08a76;
+    --warn: #e0b45c;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1d1c1a;
+  --panel: #262522;
+  --ink: #e8e6e1;
+  --muted: #a19e96;
+  --line: #3d3b36;
+  --accent: #e08a76;
+  --warn: #e0b45c;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 14px/1.5 system-ui, -apple-system, "Hiragino Sans", "Yu Gothic UI", sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line);
+}
+header h1 { font-size: 15px; margin: 0 8px 0 0; }
+header label { display: inline-flex; gap: 6px; align-items: center; }
+header input[type="text"] { width: 10em; }
+input, select, textarea, button { font: inherit; color: inherit; }
+input[type="text"], textarea {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 4px 6px;
+}
+.toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.toggle label { padding: 4px 10px; cursor: pointer; }
+.toggle input { position: absolute; opacity: 0; pointer-events: none; }
+.toggle label:has(input:checked) { background: var(--accent); color: #fff; }
+.toggle label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: -2px; }
+button.print {
+  margin-left: auto;
+  background: var(--accent);
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+main {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+}
+.source {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 16px;
+  border-right: 1px solid var(--line);
+  min-height: 0;
+}
+.source textarea#text {
+  flex: 1;
+  min-height: 12em;
+  resize: none;
+  font: 14px/1.7 ui-monospace, "SF Mono", Menlo, "Hiragino Sans", monospace;
+}
+details { font-size: 13px; }
+details textarea { width: 100%; height: 10em; font: 12px/1.5 ui-monospace, Menlo, monospace; }
+.hint { color: var(--muted); font-size: 12px; margin: 0; }
+.status { font-size: 13px; margin: 0; }
+.status .warn { color: var(--warn); }
+.preview { min-height: 0; padding: 12px 16px; display: flex; }
+.preview iframe {
+  flex: 1;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #fff;
+}
+@media (max-width: 760px) {
+  html, body { height: auto; }
+  main { display: block; }
+  .source { border-right: 0; border-bottom: 1px solid var(--line); }
+  .source textarea#text { min-height: 40vh; }
+  .preview { height: 70vh; }
+  button.print { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>縦書き台本</h1>
+  <div class="toggle" role="radiogroup" aria-label="ト書き">
+    <label><input type="radio" name="togaki" value="1" checked>ト書きあり</label>
+    <label><input type="radio" name="togaki" value="0">ト書きなし</label>
+  </div>
+  <label>名前 <input type="text" id="name" value="台本" aria-label="ファイル名のもと"></label>
+  <button type="button" class="print" id="print">印刷して PDF に</button>
+</header>
+<main>
+  <section class="source">
+    <textarea id="text" spellcheck="false" placeholder="ここに台本を貼ります（Google ドキュメントからそのまま貼れます）&#10;&#10;## Track 01 おかえり&#10;(夕方の玄関)&#10;// SE : ドアが開く&#10;おかえりなさい"></textarea>
+    <p class="status" id="status" aria-live="polite"></p>
+    <details>
+      <summary>設定（daihon.json と同じ形）</summary>
+      <textarea id="config" spellcheck="false">{}</textarea>
+      <p class="hint" id="config-error"></p>
+    </details>
+    <details>
+      <summary>塊（{名前} の中身）を読む</summary>
+      <input type="file" id="parts" accept=".txt,text/plain" multiple>
+      <p class="hint" id="parts-list">parts/ の .txt を選びます（ファイル名が塊の名前）</p>
+    </details>
+    <p class="hint">印刷の画面で「PDF に保存」を選びます。用紙の向き・大きさは設定の export.pdf.size（既定 A4 横）です。</p>
+  </section>
+  <section class="preview">
+    <iframe id="preview" title="縦書きのプレビュー"></iframe>
+  </section>
+</main>
+<script type="module" src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+{"mode":"multi","multi":{"style":"colon"},
+ "export":{"pdf":{"vertical":false,"page_number":false,"new_page":false,"size":"A5","css":"my.css","serifu_indent":"2em","line_height":2,"font":"serif"}},
+ "line_types":[{"name":"メモ","prefix":"#!","output":false},{"name":"指示","prefix":"//","class":"shiji"},{"name":"注意","prefix":["※","＊"],"suffix":"！"}],
+ "headings":[{"level":1,"prefix":"= "},{"level":7,"prefix":"Track ","count":true,"show":"%s（%s字）"}]}

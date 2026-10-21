@@ -1,0 +1,79 @@
+{
+  "count": {
+    "ignore_chars": "…",
+    "long_line": 30,
+    "include": [
+      "セリフ"
+    ]
+  },
+  "export": {
+    "pdf": {
+      "new_page": 2,
+      "serifu_indent": "3em",
+      "both": true,
+      "vertical_marks": {
+        "close": "▶",
+        "open": "◀"
+      },
+      "vertical": true
+    }
+  },
+  "line_types": [
+    {
+      "hl": "DaihonMemo",
+      "output": false,
+      "prefix": [
+        "¥",
+        "￥"
+      ],
+      "name": "メモ"
+    },
+    {
+      "hl": "DaihonShiji",
+      "prefix": "//",
+      "name": "指示"
+    },
+    {
+      "suffix": "】",
+      "hl": "DaihonIchi",
+      "prefix": "【",
+      "name": "位置"
+    },
+    {
+      "suffix": [
+        ")",
+        "）"
+      ],
+      "hl": "DaihonBamen",
+      "prefix": [
+        "(",
+        "（"
+      ],
+      "name": "場面"
+    },
+    {
+      "hl": "DiagnosticWarn",
+      "prefix": "※",
+      "name": "注意"
+    }
+  ],
+  "mode": "solo",
+  "ranges": {
+    "guides": true,
+    "close": "▲",
+    "open": "▼",
+    "words": [
+      "ささやき"
+    ],
+    "auto_close": true,
+    "brackets": true
+  },
+  "show_count": "winbar",
+  "words": {
+    "se": [
+      "ドアが開く",
+      "足音",
+      "衣擦れ"
+    ]
+  }
+}
