@@ -106,9 +106,9 @@ Google ドキュメントや Word で渡したいときは、`:dh md`（Markdown
 
 ## nvim 無しで使う（js/）
 
-Google ドキュメントや Word で書いた台本も、同じ縦書きの PDF にできます。中身は daihon と同じ決まりの JavaScript です（作る HTML は daihon と1文字も違いません）。
+Google ドキュメントや Word で書いた台本も、同じ縦書きの PDF にできます。中身は daihon と同じ決まりの JavaScript です（作る HTML は daihon と1文字も違いません。ルビだけは js 版にしかありません）。
 
-- **ブラウザ**：`js/web/index.html` を開き、台本を貼る →「印刷して PDF に」。貼った台本はどこにも送らず、保存もしません（ページが外と通信できないようにしてあります）
+- **ブラウザ**：`js/web/index.html` を開き、台本を貼る →「印刷して PDF に」。行の頭の記号（SE・演技指示など）を枠で決められ、縦書き・横書き・ルビにも対応しています。貼った台本はどこにも送らず、保存もしません（ページが外と通信できないようにしてあります）
 - **CLI**（Node 20 以上）：`node js/bin/daihon-pdf.js 台本.txt`（設定は同じフォルダの `daihon.json`。vivliostyle があれば PDF まで作ります）
 
 くわしくは [js/README.md](js/README.md)。

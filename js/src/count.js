@@ -1,5 +1,6 @@
 // 文字数を数える（元：daihon の lua/daihon/count.lua）。ファイルや画面には触らない（塊の中身は getPart で外から受け取る）
 import { parse } from "./parse.js";
+import { plain } from "./ruby.js";
 
 const MAX_DEPTH = 10; // 塊の中の塊をたどる深さの上限（ループよけ）
 const isSpace = (ch) => /^[ \t\n\v\f\r]$/.test(ch) || ch === "　";
@@ -23,6 +24,8 @@ export function format(n) {
 }
 
 const stripRefs = (s) => s.replace(/\{[^{}]+\}/g, "");
+// 数える文：{名前} の字面とルビの読みは数えない
+const countable = (s, cfg) => stripRefs(plain(s, cfg.ruby));
 
 /**
  * 数えるための道具をまとめる
@@ -64,18 +67,18 @@ export function context(cfg, getPart, include) {
 export function line(r, ctx, depth) {
   if (!r.output) return 0;
   let n = 0;
-  if (ctx.include.has(r.kind) && r.body !== undefined) n = chars(stripRefs(r.body), ctx.ignore);
+  if (ctx.include.has(r.kind) && r.body !== undefined) n = chars(countable(r.body, ctx.cfg), ctx.ignore);
   for (const ref of r.refs || []) n += ctx.partCount(ref.name, depth);
   return n;
 }
 
-/** limit 文字より長いセリフの行。返す配列：{ lnum, n }（{名前} の字面は数えない） */
+/** limit 文字より長いセリフの行。返す配列：{ lnum, n }（{名前} の字面とルビの読みは数えない） */
 export function longLines(records, ctx, limit) {
   const out = [];
   if (limit === false || limit === undefined || limit === null) return out;
   for (const r of records) {
     if (r.kind === "セリフ" && r.body !== undefined) {
-      const n = chars(stripRefs(r.body), ctx.ignore);
+      const n = chars(countable(r.body, ctx.cfg), ctx.ignore);
       if (n > limit) out.push({ lnum: r.lnum, n });
     }
   }

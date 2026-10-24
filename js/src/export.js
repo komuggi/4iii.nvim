@@ -1,6 +1,7 @@
 // 書き出し用の HTML を作る（元：daihon の lua/daihon/export.lua）。ファイルや画面には触らない（塊の中身は getPart で受け取る）
 import { parse, trim } from "./parse.js";
 import { format as formatCount } from "./count.js";
+import { split as splitRuby } from "./ruby.js";
 
 const MAX_DEPTH = 10;
 
@@ -135,7 +136,11 @@ export function build(records, cfg, opts) {
   const vertical = pdf.vertical !== false;
   const { items: list, missing } = items(records, cfg, { ...opts, vertical });
 
-  const textHtml = (s) => (vertical ? tcy(escapeHtml(s)) : escapeHtml(s));
+  const plainHtml = (s) => (vertical ? tcy(escapeHtml(s)) : escapeHtml(s));
+  const textHtml = (s) =>
+    splitRuby(s, cfg.ruby)
+      .map((p) => (p.text !== undefined ? plainHtml(p.text) : `<ruby>${plainHtml(p.base)}<rt>${escapeHtml(p.reading)}</rt></ruby>`))
+      .join("");
 
   const body = [];
   for (const it of list) {

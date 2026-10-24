@@ -10,6 +10,8 @@ export * as parser from "./parse.js";
 export * as counter from "./count.js";
 export * as exporter from "./export.js";
 export * as hankaku from "./hankaku.js";
+export * as ruby from "./ruby.js";
+export * as fields from "./fields.js";
 export { makeConfig };
 
 /** 塊の名前に使えるか（元：daihon の blocks.lua の valid_name。ファイル名になるので / や先頭の . はだめ） */

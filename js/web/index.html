@@ -101,6 +101,34 @@ main {
 details { font-size: 13px; }
 details textarea { width: 100%; height: 10em; font: 12px/1.5 ui-monospace, Menlo, monospace; }
 .hint { color: var(--muted); font-size: 12px; margin: 0; }
+.hint:empty { display: none; }
+fieldset.marks {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 6px 8px;
+  align-items: center;
+  margin: 0;
+  padding: 8px 10px 10px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+}
+fieldset.marks legend { font-size: 13px; padding: 0 4px; }
+fieldset.marks > label:not(.check) { display: contents; }
+fieldset.marks > .check, fieldset.marks > .hint, fieldset.marks > .buttons { grid-column: 1 / -1; }
+.check { display: inline-flex; gap: 6px; align-items: center; }
+.buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+.buttons button, .buttons .button {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.buttons .button input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.buttons .button:has(input:focus-visible) { outline: 2px solid var(--accent); }
+.ruby { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-block: 6px; }
+.ruby input[type="text"] { width: 4em; }
 .status { font-size: 13px; margin: 0; }
 .status .warn { color: var(--warn); }
 .preview { min-height: 0; padding: 12px 16px; display: flex; }
@@ -127,13 +155,41 @@ details textarea { width: 100%; height: 10em; font: 12px/1.5 ui-monospace, Menlo
     <label><input type="radio" name="togaki" value="1" checked>ト書きあり</label>
     <label><input type="radio" name="togaki" value="0">ト書きなし</label>
   </div>
+  <div class="toggle" role="radiogroup" aria-label="書く向き">
+    <label><input type="radio" name="vertical" value="1" checked>縦書き</label>
+    <label><input type="radio" name="vertical" value="0">横書き</label>
+  </div>
   <label>名前 <input type="text" id="name" value="台本" autocomplete="off" aria-label="ファイル名のもと"></label>
   <button type="button" class="print" id="print">印刷して PDF に</button>
 </header>
 <main>
   <section class="source">
+    <fieldset class="marks">
+      <legend>行の頭の記号（、で区切る）</legend>
+      <label>SE <input type="text" id="f-se" autocomplete="off" spellcheck="false"></label>
+      <label>コメント・演技指示 <input type="text" id="f-shiji" autocomplete="off" spellcheck="false"></label>
+      <label>その他（セリフにしない） <input type="text" id="f-other" autocomplete="off" spellcheck="false"></label>
+      <label class="check"><input type="checkbox" id="f-other-out">その他も PDF に出す</label>
+      <p class="hint">どれにも当たらない行がセリフです。文字数はセリフだけを数えます。SE とコメント・演技指示は「ト書きあり」の PDF にだけ出ます。行の頭の # と ## は見出し（トラック）です。</p>
+      <p class="hint" id="f-extra"></p>
+      <div class="buttons">
+        <button type="button" id="save">この設定で保存</button>
+        <label class="button">設定を開く<input type="file" id="open" accept=".json,application/json"></label>
+      </div>
+    </fieldset>
     <textarea id="text" spellcheck="false" autocomplete="off" placeholder="ここに台本を貼ります（Google ドキュメントからそのまま貼れます）&#10;&#10;## Track 01 おかえり&#10;(夕方の玄関)&#10;// SE : ドアが開く&#10;おかえりなさい"></textarea>
     <p class="status" id="status" aria-live="polite"></p>
+    <details>
+      <summary>ルビの書き方</summary>
+      <div class="ruby">
+        <label class="check"><input type="checkbox" id="r-on">ルビを読む</label>
+        <label>始め <input type="text" id="r-start" autocomplete="off" spellcheck="false"></label>
+        <label>開き <input type="text" id="r-open" autocomplete="off" spellcheck="false"></label>
+        <label>閉じ <input type="text" id="r-close" autocomplete="off" spellcheck="false"></label>
+        <label class="check"><input type="checkbox" id="r-pixiv">[[rb:漢字 &gt; かんじ]] も読む</label>
+      </div>
+      <p class="hint">例：|漢字《かんじ》。始めの記号が無いときは、開きの前に続く漢字に付けます。ルビの字は文字数に入れません。</p>
+    </details>
     <details>
       <summary>設定（daihon.json と同じ形）</summary>
       <textarea id="config" spellcheck="false" autocomplete="off">{}</textarea>
@@ -144,8 +200,8 @@ details textarea { width: 100%; height: 10em; font: 12px/1.5 ui-monospace, Menlo
       <input type="file" id="parts" accept=".txt,text/plain" multiple>
       <p class="hint" id="parts-list">parts/ の .txt を選びます（ファイル名が塊の名前）</p>
     </details>
-    <p class="hint">貼った台本はどこにも送らず、保存もしません（閉じると消えます）。</p>
-    <p class="hint">印刷の画面で「PDF に保存」を選びます。用紙の向き・大きさは設定の export.pdf.size（既定 A4 横）です。</p>
+    <p class="hint">貼った台本はどこにも送らず、保存もしません（閉じると消えます）。「この設定で保存」は、記号などの設定だけをこの PC に daihon.json で落とします。</p>
+    <p class="hint">印刷の画面で「PDF に保存」を選びます。用紙の向き・大きさは設定の export.pdf.size（書いていなければ、縦書きは A4 横・横書きは A4 縦）です。</p>
   </section>
   <section class="preview">
     <iframe id="preview" title="縦書きのプレビュー"></iframe>

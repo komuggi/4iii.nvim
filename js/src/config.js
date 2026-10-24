@@ -42,6 +42,9 @@ export const defaults = {
 
   words: { se: [], shiji: [] },
 
+  // ルビ（daihon には無い・この js 版だけ）：|漢字《かんじ》・漢字《かんじ》・[[rb:漢字 > かんじ]]。false で読まない
+  ruby: { start: ["|", "｜"], open: "《", close: "》", pixiv: true },
+
   // 日本語入力のまま打った記号（／／ ＃ ｛｝ など）を、記号として使う場所でだけ半角にする
   hankaku: true,
 
@@ -139,6 +142,7 @@ export function validate(cfg) {
       return fail(`line_types の「${lt.name}」に prefix がありません`);
     }
   }
+  if (cfg.ruby !== false && !isTable(cfg.ruby)) return fail(`ruby は表か false で書いてください（今は ${show(cfg.ruby)}）`);
   const headings = Array.isArray(cfg.headings) ? cfg.headings : [];
   for (const [i, h] of headings.entries()) {
     if (typeof h.level !== "number" || h.prefix === undefined || h.prefix === null || h.prefix === "") {
