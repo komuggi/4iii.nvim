@@ -1,5 +1,6 @@
 // ブラウザのページ：貼った台本 → 縦書きのプレビュー → 印刷して PDF に
 // 部品（../src/index.js）をそのまま使う。外の CDN は使わない
+// 台本はどこにも送らず、ブラウザにも残さない（外への通信は index.html の CSP で止めている）
 import { makeConfig, render, splitLines, validPartName, parser, hankaku, config as configLib } from "../src/index.js";
 
 const $ = (id) => document.getElementById(id);
@@ -12,23 +13,6 @@ const parts = new Map(); // 名前 → 行の配列
 
 // 画面で見るときだけの見た目（印刷には効かない）
 const SCREEN_CSS = "@media screen { html { background: #fff; } body { padding: 24px; } }";
-
-const store = {
-  get(key) {
-    try {
-      return localStorage.getItem(`daihon-pdf:${key}`);
-    } catch {
-      return null;
-    }
-  },
-  set(key, value) {
-    try {
-      localStorage.setItem(`daihon-pdf:${key}`, value);
-    } catch {
-      // 保存できなくても動く
-    }
-  },
-};
 
 let cfg = makeConfig({});
 
@@ -75,12 +59,7 @@ function update() {
 let timer;
 function schedule() {
   clearTimeout(timer);
-  timer = setTimeout(() => {
-    store.set("text", textBox.value);
-    store.set("config", configBox.value);
-    store.set("name", nameBox.value);
-    update();
-  }, 150);
+  timer = setTimeout(update, 150);
 }
 
 // 貼り付け：日本語入力のままの記号（／／ ＃ ｛｝ など）を、daihon で打ったときと同じに直す
@@ -128,8 +107,10 @@ window.addEventListener("keydown", (ev) => {
   }
 });
 
-textBox.value = store.get("text") ?? "";
-configBox.value = store.get("config") ?? "{}";
-nameBox.value = store.get("name") ?? "台本";
+// 台本はブラウザにも残さない。閉じる・読み直す前に確かめる
+window.addEventListener("beforeunload", (ev) => {
+  if (textBox.value.trim() !== "") ev.preventDefault();
+});
+
 readConfig();
 update();

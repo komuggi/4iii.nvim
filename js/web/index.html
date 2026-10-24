@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 外への通信を全部止める（台本をどこにも送らない）。読めるのはこのページと同じ所のスクリプトだけ -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'unsafe-inline'; img-src data:; frame-src 'self'; base-uri 'none'; form-action 'none'">
 <title>縦書き台本</title>
 <link rel="icon" href="data:,">
 <style>
@@ -125,16 +127,16 @@ details textarea { width: 100%; height: 10em; font: 12px/1.5 ui-monospace, Menlo
     <label><input type="radio" name="togaki" value="1" checked>ト書きあり</label>
     <label><input type="radio" name="togaki" value="0">ト書きなし</label>
   </div>
-  <label>名前 <input type="text" id="name" value="台本" aria-label="ファイル名のもと"></label>
+  <label>名前 <input type="text" id="name" value="台本" autocomplete="off" aria-label="ファイル名のもと"></label>
   <button type="button" class="print" id="print">印刷して PDF に</button>
 </header>
 <main>
   <section class="source">
-    <textarea id="text" spellcheck="false" placeholder="ここに台本を貼ります（Google ドキュメントからそのまま貼れます）&#10;&#10;## Track 01 おかえり&#10;(夕方の玄関)&#10;// SE : ドアが開く&#10;おかえりなさい"></textarea>
+    <textarea id="text" spellcheck="false" autocomplete="off" placeholder="ここに台本を貼ります（Google ドキュメントからそのまま貼れます）&#10;&#10;## Track 01 おかえり&#10;(夕方の玄関)&#10;// SE : ドアが開く&#10;おかえりなさい"></textarea>
     <p class="status" id="status" aria-live="polite"></p>
     <details>
       <summary>設定（daihon.json と同じ形）</summary>
-      <textarea id="config" spellcheck="false">{}</textarea>
+      <textarea id="config" spellcheck="false" autocomplete="off">{}</textarea>
       <p class="hint" id="config-error"></p>
     </details>
     <details>
@@ -142,6 +144,7 @@ details textarea { width: 100%; height: 10em; font: 12px/1.5 ui-monospace, Menlo
       <input type="file" id="parts" accept=".txt,text/plain" multiple>
       <p class="hint" id="parts-list">parts/ の .txt を選びます（ファイル名が塊の名前）</p>
     </details>
+    <p class="hint">貼った台本はどこにも送らず、保存もしません（閉じると消えます）。</p>
     <p class="hint">印刷の画面で「PDF に保存」を選びます。用紙の向き・大きさは設定の export.pdf.size（既定 A4 横）です。</p>
   </section>
   <section class="preview">
