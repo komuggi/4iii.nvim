@@ -46,12 +46,17 @@ local function part_path(st, name)
   return vim.fs.joinpath(st.root, st.cfg.parts_dir, name .. ".txt")
 end
 
-local function read_part(st, name)
+--- 塊の中身（parts/名前.txt の行）。無い・名前に使えない（../ など parts/ の外を指す）なら nil
+function M.read_part(st, name)
+  if not M.valid_name(name) then
+    return nil
+  end
   local path = part_path(st, name)
   if vim.fn.filereadable(path) == 1 then
     return vim.fn.readfile(path)
   end
 end
+local read_part = M.read_part
 
 local function write_part(st, name, lines)
   local path = part_path(st, name)

@@ -11,6 +11,17 @@ test("塊：名前に使えるか", function()
   eq(false, blocks.valid_name(""))
 end)
 
+test("塊：中身を読むのは parts/ の中だけ", function()
+  local root = vim.fn.tempname()
+  vim.fn.mkdir(root .. "/parts", "p")
+  vim.fn.writefile({ "あいさつ" }, root .. "/parts/A.txt")
+  vim.fn.writefile({ "外の台本" }, root .. "/外.txt")
+  local st = { root = root, cfg = cfg }
+  eq({ "あいさつ" }, blocks.read_part(st, "A"))
+  eq(nil, blocks.read_part(st, "../外")) -- {../外} と書いても parts/ の外は読まない
+  eq(nil, blocks.read_part(st, "無い"))
+end)
+
 test("塊：その行を囲んでいる {{ }} を探す", function()
   local r = parse.parse({ "前", "{{A", "中", "}}", "後", "{{B", "閉じていない" }, cfg)
   eq(nil, blocks.block_at(r, 1))

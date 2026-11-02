@@ -104,14 +104,9 @@ Google ドキュメントや Word で渡したいときは、`:dh md`（Markdown
 
 動く例は [examples/sample](examples/sample) にあります。台本の中のメモに、どの設定で何が変わるかを書いてあります。全部の設定は `:h daihon-config` で見られます。
 
-## nvim 無しで使う（js/）
+## nvim 無しで使う
 
-Google ドキュメントや Word で書いた台本も、同じ縦書きの PDF にできます。中身は daihon と同じ決まりの JavaScript です（作る HTML は daihon と1文字も違いません。ルビだけは js 版にしかありません）。
-
-- **ブラウザ**：`js/web/index.html` を開き、台本を貼る →「印刷して PDF に」。行の頭の記号（SE・演技指示など）を枠で決められ、縦書き・横書き・ルビにも対応しています。貼った台本はどこにも送らず、保存もしません（ページが外と通信できないようにしてあります）
-- **CLI**（Node 20 以上）：`node js/bin/daihon-pdf.js 台本.txt`（設定は同じフォルダの `daihon.json`。vivliostyle があれば PDF まで作ります）
-
-くわしくは [js/README.md](js/README.md)。
+Google ドキュメントや Word で書いた台本も、同じ縦書きの PDF にできます。ブラウザに貼るだけのページと CLI は [4iii](https://github.com/komuggi/4iii) にあります（daihon と同じ決まりで、同じ HTML を作ります。ルビは 4iii だけ）。
 
 ## もっと詳しく
 

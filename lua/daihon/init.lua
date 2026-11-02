@@ -29,12 +29,7 @@ function M.setup(opts)
   end
 end
 
-local function read_part(st, name)
-  local path = vim.fs.joinpath(st.root, st.cfg.parts_dir, name .. ".txt")
-  if vim.fn.filereadable(path) == 1 then
-    return vim.fn.readfile(path)
-  end
-end
+local read_part = blocks.read_part
 
 local function context(st, include)
   return count.context(st.cfg, function(name)
