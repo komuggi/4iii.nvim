@@ -1,5 +1,5 @@
 -- 文字数を数える。ファイルや画面には触らない（塊の中身は get_part で外から受け取る）
-local parse = require("daihon.parse")
+local parse = require("4iii.parse")
 
 local M = {}
 

@@ -1,7 +1,9 @@
--- 設定：既定値・重ね合わせ・確認・作品フォルダの daihon.lua の読み込み
+-- 設定：既定値・重ね合わせ・確認・作品フォルダの 4iii.lua の読み込み
 local M = {}
 
-M.FILE = "daihon.lua"
+M.FILE = "4iii.lua"
+-- shortcut: 古い daihon.lua も読む（v0.1.0 の作品フォルダのため）・次の大きい版で外す
+M.FILES = { M.FILE, "daihon.lua" }
 
 M.defaults = {
   mode = "solo", -- "solo"（1人・セリフは直打ち）／"multi"（複数人）
@@ -10,10 +12,10 @@ M.defaults = {
 
   -- 行の種類の表。上から順に見て、最初に当てはまったものになる。どれにも当たらない行＝セリフ
   line_types = {
-    { name = "メモ", prefix = { "¥", "￥" }, output = false, hl = "DaihonMemo" },
-    { name = "指示", prefix = "//", output = true, hl = "DaihonShiji" },
-    { name = "位置", prefix = "【", suffix = "】", output = true, hl = "DaihonIchi" },
-    { name = "場面", prefix = { "(", "（" }, suffix = { ")", "）" }, output = true, hl = "DaihonBamen" },
+    { name = "メモ", prefix = { "¥", "￥" }, output = false, hl = "4iiiMemo" },
+    { name = "指示", prefix = "//", output = true, hl = "4iiiShiji" },
+    { name = "位置", prefix = "【", suffix = "】", output = true, hl = "4iiiIchi" },
+    { name = "場面", prefix = { "(", "（" }, suffix = { ")", "）" }, output = true, hl = "4iiiBamen" },
   },
 
   -- 囲い指示。in_types の行の頭に付く。▼ラベル で開いて ▲ラベル で閉じる
@@ -167,7 +169,7 @@ function M.inside(path)
   return true
 end
 
--- 作品ごとの daihon.lua では変えられない設定（自分の nvim の設定でだけ変える）
+-- 作品ごとの 4iii.lua では変えられない設定（自分の nvim の設定でだけ変える）
 M.GLOBAL_ONLY = { { "export", "pdf", "command" } }
 
 --- 作品ごとの設定から GLOBAL_ONLY を取り除く。取り除いた名前のリストを返す
@@ -186,7 +188,7 @@ function M.strip_global_only(project)
   return removed
 end
 
--- daihon.lua の中で使える文字列の操作（rep など、大きな文字列を作れるものは外す）
+-- 4iii.lua の中で使える文字列の操作（rep など、大きな文字列を作れるものは外す）
 local SAFE_STRING = {}
 for _, name in ipairs({
   "byte",
@@ -251,7 +253,7 @@ function M.run_sandboxed(src, name)
   return res
 end
 
---- 作品フォルダの daihon.lua を読む（run_sandboxed で読むので、信頼の確認は要らない）
+--- 作品フォルダの 4iii.lua を読む（run_sandboxed で読むので、信頼の確認は要らない）
 function M.read_project(path)
   local ok, lines = pcall(vim.fn.readfile, path)
   if not ok then

@@ -1,6 +1,6 @@
 -- 書き出し用の HTML・Markdown を作る。ファイルや画面には触らない（塊の中身は get_part で受け取る）
-local parse = require("daihon.parse")
-local count = require("daihon.count")
+local parse = require("4iii.parse")
+local count = require("4iii.count")
 
 local M = {}
 

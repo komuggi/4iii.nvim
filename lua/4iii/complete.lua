@@ -1,5 +1,5 @@
 -- 候補を決める。ファイルや画面には触らない
-local parse = require("daihon.parse")
+local parse = require("4iii.parse")
 
 local M = {}
 

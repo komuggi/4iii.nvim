@@ -1,4 +1,4 @@
-local hankaku = require("daihon.hankaku")
+local hankaku = require("4iii.hankaku")
 
 test("半角：行の頭の ／／ ＃ （ ￥ は半角に", function()
   eq("/", hankaku.convert("／", ""))

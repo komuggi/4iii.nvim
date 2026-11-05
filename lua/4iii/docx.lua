@@ -1,6 +1,6 @@
 -- Word（.docx）に書き出す。外の道具は使わず、XML を zip（無圧縮）にまとめて作る
 -- ファイルや画面には触らない（できたバイト列を返すだけ）
-local export = require("daihon.export")
+local export = require("4iii.export")
 local bit = require("bit")
 
 local M = {}

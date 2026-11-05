@@ -1,6 +1,6 @@
-local config = require("daihon.config")
-local parse = require("daihon.parse")
-local count = require("daihon.count")
+local config = require("4iii.config")
+local parse = require("4iii.parse")
+local count = require("4iii.count")
 
 local function cfg(over)
   return config.merge(config.defaults, over)
@@ -221,7 +221,7 @@ end)
 
 -- 作品ごとの設定を安全に読む ------------------------------------------
 
-test("安全：daihon.lua は表を返すだけ。nvim・ファイルには触れない", function()
+test("安全：4iii.lua は表を返すだけ。nvim・ファイルには触れない", function()
   eq({ mode = "multi" }, config.run_sandboxed('return { mode = "multi" }', "t"))
   eq({ n = 3 }, config.run_sandboxed('local s = ("abc"):upper() return { n = #s }', "t"))
   for _, src in ipairs({
@@ -234,7 +234,7 @@ test("安全：daihon.lua は表を返すだけ。nvim・ファイルには触�
   end
 end)
 
-test("安全：止まらない・大きすぎる daihon.lua は止める", function()
+test("安全：止まらない・大きすぎる 4iii.lua は止める", function()
   local res, err = config.run_sandboxed("while true do end", "t")
   eq(nil, res)
   eq(true, err:find("長すぎる") ~= nil)

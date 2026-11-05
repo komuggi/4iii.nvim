@@ -1,7 +1,7 @@
-local config = require("daihon.config")
-local parse = require("daihon.parse")
-local count = require("daihon.count")
-local export = require("daihon.export")
+local config = require("4iii.config")
+local parse = require("4iii.parse")
+local count = require("4iii.count")
+local export = require("4iii.export")
 
 local function build(lines, togaki, over)
   local cfg = config.merge(config.defaults, over)
@@ -140,7 +140,7 @@ test("Markdown：記号は逃がす。話す人の名前は太字", function()
   )
 end)
 
-local docx = require("daihon.docx")
+local docx = require("4iii.docx")
 
 --- 無圧縮の zip から、名前でファイルの中身を取り出す（テスト用）
 local function unzip(bytes, name)

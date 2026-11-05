@@ -1,16 +1,16 @@
 -- 作品ごとの設定。書いたところだけ、全体の設定を上書きします（return {} の1行でもかまいません）
 -- 例として、よく変える設定を並べました。値を変えて保存すると、開いている台本がすぐ変わります
--- ★ の所だけ既定から変えています。ほかは既定の値のままです（全部の設定は :h daihon-config）
+-- ★ の所だけ既定から変えています。ほかは既定の値のままです（全部の設定は :h 4iii-config）
 return {
   mode = "solo", -- 1人の台本。"multi" にすると 名前「セリフ」 で書けて、名前とかっこは数えない
 
   -- 行の頭の記号と種類の表。上から順に見て、最初に当てはまったもの。どれにも当たらない行がセリフ
   -- リストは丸ごと置き換わるので、足すときは既定の4つも書きます
   line_types = {
-    { name = "メモ", prefix = { "¥", "￥" }, output = false, hl = "DaihonMemo" }, -- output = false で書き出さない
-    { name = "指示", prefix = "//", hl = "DaihonShiji" },
-    { name = "位置", prefix = "【", suffix = "】", hl = "DaihonIchi" },
-    { name = "場面", prefix = { "(", "（" }, suffix = { ")", "）" }, hl = "DaihonBamen" },
+    { name = "メモ", prefix = { "¥", "￥" }, output = false, hl = "4iiiMemo" }, -- output = false で書き出さない
+    { name = "指示", prefix = "//", hl = "4iiiShiji" },
+    { name = "位置", prefix = "【", suffix = "】", hl = "4iiiIchi" },
+    { name = "場面", prefix = { "(", "（" }, suffix = { ")", "）" }, hl = "4iiiBamen" },
     { name = "注意", prefix = "※", hl = "DiagnosticWarn" }, -- ★ 足した種類（hl は色の名前）
   },
 

@@ -1,44 +1,44 @@
-*daihon.txt*  音声作品の台本を書いて、縦書きの PDF にする
+*4iii.txt*  音声作品の台本を書いて、縦書きの PDF にする
 
 ==============================================================================
-目次                                                          *daihon-contents*
+目次                                                          *4iii-contents*
 
-  1. はじめに ................................... |daihon-intro|
-  2. 台本の書き方 ............................... |daihon-writing|
-  3. 塊 ......................................... |daihon-parts|
-  4. 文字数 ..................................... |daihon-count|
-  5. 書き出し ................................... |daihon-export|
-  6. コマンドとキー ............................. |daihon-commands|
-  7. 設定 ....................................... |daihon-config|
-  8. 色 ......................................... |daihon-highlights|
-  9. 安全のために ............................... |daihon-safety|
+  1. はじめに ................................... |4iii-intro|
+  2. 台本の書き方 ............................... |4iii-writing|
+  3. 塊 ......................................... |4iii-parts|
+  4. 文字数 ..................................... |4iii-count|
+  5. 書き出し ................................... |4iii-export|
+  6. コマンドとキー ............................. |4iii-commands|
+  7. 設定 ....................................... |4iii-config|
+  8. 色 ......................................... |4iii-highlights|
+  9. 安全のために ............................... |4iii-safety|
 
 ==============================================================================
-1. はじめに                                                      *daihon-intro*
+1. はじめに                                                      *4iii-intro*
 
-作品のフォルダに `daihon.lua` を置くと、そのフォルダ（とその下）の `.txt` が
+作品のフォルダに `4iii.lua` を置くと、そのフォルダ（とその下）の `.txt` が
 台本として開かれます。
 
 >text
     作品フォルダ/
-    ├── daihon.lua      作品ごとの設定（return {} だけでもよい）
+    ├── 4iii.lua      作品ごとの設定（return {} だけでもよい）
     ├── 台本.txt         台本。見出しで区切って1ファイルに書く
     ├── parts/          塊（{名前}）の中身
     └── out/            書き出した PDF・.md・.docx
 <
 
-全部の作品に効く設定は |daihon.setup()| に、作品ごとの設定はその作品の
-`daihon.lua` に書きます。同じ書き方で、作品ごとの方が上書きします。
+全部の作品に効く設定は |4iii.setup()| に、作品ごとの設定はその作品の
+`4iii.lua` に書きます。同じ書き方で、作品ごとの方が上書きします。
 
-                                                               *daihon.setup()*
+                                                               *4iii.setup()*
 >lua
-    require("daihon").setup({
-      -- ここに |daihon-config| の設定
+    require("4iii").setup({
+      -- ここに |4iii-config| の設定
     })
 <
 
 ==============================================================================
-2. 台本の書き方                                                *daihon-writing*
+2. 台本の書き方                                                *4iii-writing*
 
 行の頭の記号で、行の種類を見分けます。どれにも当たらない行がセリフです。
 
@@ -50,9 +50,9 @@
     `¥` `￥`    メモ    出さない    数えない
     `#` `##`    見出し  出す        `##` ごとに数える
 
-記号と種類は `line_types` で自分で決められます（|daihon-config|）。
+記号と種類は `line_types` で自分で決められます（|4iii-config|）。
 
-                                                              *daihon-hankaku*
+                                                              *4iii-hankaku*
 日本語入力のまま打った記号は、記号として使う場所でだけ半角にします
 （`hankaku = false` で止められます）。セリフの中の全角はそのままです。
 
@@ -65,7 +65,7 @@
 複数人の台本は `mode = "multi"` にして、`名前「セリフ」`（`multi.style =
 "kagi"`）か `名前：セリフ`（`"colon"`）で書きます。名前とかっこは数えません。
 
-囲い指示                                                        *daihon-ranges*
+囲い指示                                                        *4iii-ranges*
 
 行の頭（または指示・場面の行の頭）に `▼ラベル` を書くと範囲が始まり、
 `▲ラベル` で終わります。範囲の行は文字数に入りません。
@@ -96,7 +96,7 @@
 範囲の中の行の左には、縦の線を出します（画面だけ。ファイルには入りません）。
 範囲が重なると線が増え、ラベルごとに色が変わります（`ranges.guides`）。
 
-言葉の候補                                                       *daihon-words*
+言葉の候補                                                       *4iii-words*
 
 - `// SE : ` と打つと、SE の候補が出ます。`words.se` に登録した言葉が先、
   この台本で使った SE（多い順）があとです。`・` や `、` のあとも出ます。
@@ -111,7 +111,7 @@
 <
 
 ==============================================================================
-3. 塊                                                            *daihon-parts*
+3. 塊                                                            *4iii-parts*
 
 よく使う文章を `parts/名前.txt` に置き、台本には `{名前}` と書きます。
 文字数は中身で数え、書き出すと中身に置き換わります。
@@ -136,7 +136,7 @@
     `{@文字数一覧}`   見出しごとの文字数と合計の一覧（仕様書に）
 
 ==============================================================================
-4. 文字数                                                        *daihon-count*
+4. 文字数                                                        *4iii-count*
 
 空白と改行を除いて数えます。既定ではセリフだけを数えます。
 
@@ -151,7 +151,7 @@
 
 >lua
     -- lualine の例
-    sections = { lualine_x = { require("daihon").status } }
+    sections = { lualine_x = { require("4iii").status } }
 <
 - `count = true` の見出しの横に、その見出しの下の文字数を出します
 - `count.long_line`（既定 30）より長いセリフに、薄い印を付けます
@@ -159,7 +159,7 @@
   ときの両方で出します
 
 ==============================================================================
-5. 書き出し                                                     *daihon-export*
+5. 書き出し                                                     *4iii-export*
 
 `:dh pdf` で、作品フォルダの `out/` に PDF を作ります。
 `台本_ト書きあり.pdf` と `台本_ト書きなし.pdf` の2つです。`:dh html` は
@@ -179,7 +179,7 @@ HTML だけを作ります。PDF を作るには Vivliostyle CLI が要ります
     .t-指示 { color: gray; }
 <
 
-Google ドキュメント・Word で渡すとき                      *daihon-export-md*
+Google ドキュメント・Word で渡すとき                      *4iii-export-md*
 
 `:dh md` で Markdown（`.md`）、`:dh docx` で Word（`.docx`）を、PDF と同じ
 `out/` に書き出します。ト書きあり／なし・見出しの文字数・`{名前}` の中身・
@@ -193,7 +193,7 @@ Google ドキュメント・Word で渡すとき                      *daihon-ex
   人が Word で見た目を変えられます。`export.pdf.css` は使いません
 
 ==============================================================================
-6. コマンドとキー                                            *daihon-commands*
+6. コマンドとキー                                            *4iii-commands*
 
                                                                          *:Dh*
 :Dh {やること}      小文字の `:dh` でも打てます（行の頭の `dh` を `Dh` に
@@ -216,7 +216,7 @@ Google ドキュメント・Word で渡すとき                      *daihon-ex
     `<localleader>]`  下に ▲ の行を作る
 
 ==============================================================================
-7. 設定                                                         *daihon-config*
+7. 設定                                                         *4iii-config*
 
 既定値です。書いたところだけ上書きされます。`line_types` などのリストは、
 書くと丸ごと置き換わります（足すのではなく、全部書き直す）。
@@ -227,10 +227,10 @@ Google ドキュメント・Word で渡すとき                      *daihon-ex
 
       -- 上から順に見て、最初に当てはまったもの。どれにも当たらない行がセリフ
       line_types = {
-        { name = "メモ", prefix = { "¥", "￥" }, output = false, hl = "DaihonMemo" },
-        { name = "指示", prefix = "//", hl = "DaihonShiji" },
-        { name = "位置", prefix = "【", suffix = "】", hl = "DaihonIchi" },
-        { name = "場面", prefix = { "(", "（" }, suffix = { ")", "）" }, hl = "DaihonBamen" },
+        { name = "メモ", prefix = { "¥", "￥" }, output = false, hl = "4iiiMemo" },
+        { name = "指示", prefix = "//", hl = "4iiiShiji" },
+        { name = "位置", prefix = "【", suffix = "】", hl = "4iiiIchi" },
+        { name = "場面", prefix = { "(", "（" }, suffix = { ")", "）" }, hl = "4iiiBamen" },
       },
 
       ranges = {
@@ -260,7 +260,7 @@ Google ドキュメント・Word で渡すとき                      *daihon-ex
         shiji = {},                -- 指示の行で <C-x><C-o> を押すと出す言葉
       },
 
-      hankaku = true,              -- 記号を半角にする（|daihon-hankaku|）
+      hankaku = true,              -- 記号を半角にする（|4iii-hankaku|）
       parts_dir = "parts",
       show_count = "winbar",     -- "winbar"／"float"／"statusline"／false
 
@@ -291,31 +291,31 @@ Google ドキュメント・Word で渡すとき                      *daihon-ex
 <
 
 ==============================================================================
-8. 色                                                       *daihon-highlights*
+8. 色                                                       *4iii-highlights*
 
 既存の色につないであります。`:hi` で変えられます。
 
-    DaihonHeading   見出し          (Title)
-    DaihonShiji     指示            (Comment)
-    DaihonIchi      位置            (Type)
-    DaihonBamen     場面            (Special)
-    DaihonMemo      メモ            (NonText)
-    DaihonRange     ▼ ▲ のラベル    (Keyword)
-    DaihonSpeaker   話す人の名前    (Identifier)
-    DaihonBlock     塊の名前        (Constant)
-    DaihonCount     文字数の表示    (Comment)
-    DaihonGuide1〜6 範囲の縦の線    (DiagnosticInfo など)
+    4iiiHeading   見出し          (Title)
+    4iiiShiji     指示            (Comment)
+    4iiiIchi      位置            (Type)
+    4iiiBamen     場面            (Special)
+    4iiiMemo      メモ            (NonText)
+    4iiiRange     ▼ ▲ のラベル    (Keyword)
+    4iiiSpeaker   話す人の名前    (Identifier)
+    4iiiBlock     塊の名前        (Constant)
+    4iiiCount     文字数の表示    (Comment)
+    4iiiGuide1〜6 範囲の縦の線    (DiagnosticInfo など)
 
 ==============================================================================
-9. 安全のために                                                *daihon-safety*
+9. 安全のために                                                *4iii-safety*
 
-- 作品フォルダの `daihon.lua` は、何にも触れない空の環境で読みます。
+- 作品フォルダの `4iii.lua` は、何にも触れない空の環境で読みます。
   nvim の機能・ファイル・コマンドは使えず、できるのは設定の表を返すことだけ
   です。長すぎる・大きすぎるときは途中で止めます
-- PDF を作るコマンド（`export.pdf.command`）は |daihon.setup()| でだけ変え
-  られます。`daihon.lua` に書いても無視します
+- PDF を作るコマンド（`export.pdf.command`）は |4iii.setup()| でだけ変え
+  られます。`4iii.lua` に書いても無視します
 - `parts_dir`・`export.dir`・`export.pdf.css` は作品フォルダの中しか指せません
 - 通信はしません。PDF は、入れておいた `vivliostyle` を、シェルを通さずに
-  呼ぶだけです。`.md`・`.docx` は daihon の中だけで作ります
+  呼ぶだけです。`.md`・`.docx` は 4iii の中だけで作ります
 
  vim:tw=78:ts=8:ft=help:norl:

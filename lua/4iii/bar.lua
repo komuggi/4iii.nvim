@@ -1,7 +1,7 @@
 -- 文字数をいつも出す：ウィンドウの上の帯（winbar）か、右上の小窓（float）
 local M = {}
 
-local WINBAR = "%{%v:lua.require'daihon'.winbar()%}"
+local WINBAR = "%{%v:lua.require'4iii'.winbar()%}"
 local floats = {} -- win → { win, buf }
 
 --- このウィンドウだけの winbar（:setlocal）
@@ -37,7 +37,7 @@ local function show_float(win, text)
     local fbuf = vim.api.nvim_create_buf(false, true)
     opts.noautocmd = true
     f = { buf = fbuf, win = vim.api.nvim_open_win(fbuf, false, opts) }
-    vim.wo[f.win].winhighlight = "Normal:DaihonCount"
+    vim.wo[f.win].winhighlight = "Normal:4iiiCount"
     floats[win] = f
   else
     vim.api.nvim_win_set_config(f.win, opts)

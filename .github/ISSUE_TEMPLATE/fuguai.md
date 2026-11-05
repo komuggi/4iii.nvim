@@ -12,7 +12,7 @@ labels: 不具合
 
 ## 思っていた動き
 
-## :checkhealth daihon の結果
+## :checkhealth 4iii の結果
 
 ```text
 

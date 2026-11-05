@@ -1,15 +1,15 @@
-if vim.g.loaded_daihon then
+if vim.g.loaded_4iii then
   return
 end
-vim.g.loaded_daihon = true
+vim.g.loaded_4iii = true
 
-local group = vim.api.nvim_create_augroup("daihon", { clear = true })
+local group = vim.api.nvim_create_augroup("4iii", { clear = true })
 
-require("daihon.view").define_highlights()
+require("4iii.view").define_highlights()
 vim.api.nvim_create_autocmd("ColorScheme", {
   group = group,
   callback = function()
-    require("daihon.view").define_highlights()
+    require("4iii.view").define_highlights()
   end,
 })
 
@@ -17,15 +17,15 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
   group = group,
   pattern = "*.txt",
   callback = function(ev)
-    require("daihon").attach(ev.buf)
+    require("4iii").attach(ev.buf)
   end,
 })
 
 vim.api.nvim_create_autocmd("BufWritePost", {
   group = group,
-  pattern = "daihon.lua",
+  pattern = { "4iii.lua", "daihon.lua" },
   callback = function(ev)
-    require("daihon").reload_config(ev.match)
+    require("4iii").reload_config(ev.match)
   end,
 })
 
@@ -33,13 +33,13 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 vim.api.nvim_create_autocmd("BufWinEnter", {
   group = group,
   callback = function(ev)
-    require("daihon").on_win_enter(vim.api.nvim_get_current_win(), ev.buf)
+    require("4iii").on_win_enter(vim.api.nvim_get_current_win(), ev.buf)
   end,
 })
 vim.api.nvim_create_autocmd("WinClosed", {
   group = group,
   callback = function(ev)
-    require("daihon").close_bar(tonumber(ev.match))
+    require("4iii").close_bar(tonumber(ev.match))
   end,
 })
 vim.api.nvim_create_autocmd("WinResized", {
@@ -47,7 +47,7 @@ vim.api.nvim_create_autocmd("WinResized", {
   callback = function()
     for _, win in ipairs(vim.v.event.windows or {}) do
       if vim.api.nvim_win_is_valid(win) then
-        require("daihon").on_win_enter(win, vim.api.nvim_win_get_buf(win))
+        require("4iii").on_win_enter(win, vim.api.nvim_win_get_buf(win))
       end
     end
   end,
@@ -55,20 +55,20 @@ vim.api.nvim_create_autocmd("WinResized", {
 
 -- :Dh pdf / html / md / docx / count / pick / toggle
 vim.api.nvim_create_user_command("Dh", function(o)
-  require("daihon").command(o.args)
+  require("4iii").command(o.args)
 end, {
   nargs = 1,
   complete = function(lead)
-    local names = vim.tbl_keys(require("daihon").commands)
+    local names = vim.tbl_keys(require("4iii").commands)
     table.sort(names)
     return vim.tbl_filter(function(n)
       return n:find(lead, 1, true) == 1
     end, names)
   end,
-  desc = "daihon：pdf / html / md / docx / count / pick / toggle",
+  desc = "4iii：pdf / html / md / docx / count / pick / toggle",
 })
 
 -- 小文字の :dh でも打てるように（nvim のコマンドは大文字始まりの決まりなので、行の頭の dh だけ Dh に置き換える）
 vim.keymap.set("ca", "dh", function()
   return (vim.fn.getcmdtype() == ":" and vim.fn.getcmdline() == "dh") and "Dh" or "dh"
-end, { expr = true, desc = "daihon: :dh → :Dh" })
+end, { expr = true, desc = "4iii: :dh → :Dh" })

@@ -1,29 +1,29 @@
 -- 画面への表示：色分け・見出しの文字数・▼▲ などの警告
-local count = require("daihon.count")
+local count = require("4iii.count")
 
 local M = {}
 
-M.ns = vim.api.nvim_create_namespace("daihon")
-M.ns_diag = vim.api.nvim_create_namespace("daihon_diag")
+M.ns = vim.api.nvim_create_namespace("4iii")
+M.ns_diag = vim.api.nvim_create_namespace("4iii_diag")
 
--- 色は既存の色の名前につなぐ。自分で変えるときは :hi DaihonShiji guifg=... のように上書きする
+-- 色は既存の色の名前につなぐ。自分で変えるときは :hi 4iiiShiji guifg=... のように上書きする
 local LINKS = {
-  DaihonHeading = "Title",
-  DaihonShiji = "Comment",
-  DaihonIchi = "Type",
-  DaihonBamen = "Special",
-  DaihonMemo = "NonText",
-  DaihonRange = "Keyword",
-  DaihonSpeaker = "Identifier",
-  DaihonBlock = "Constant",
-  DaihonCount = "Comment",
+  Heading = "Title",
+  Shiji = "Comment",
+  Ichi = "Type",
+  Bamen = "Special",
+  Memo = "NonText",
+  Range = "Keyword",
+  Speaker = "Identifier",
+  Block = "Constant",
+  Count = "Comment",
   -- 範囲の縦の線（ラベルごとに色を変える）
-  DaihonGuide1 = "DiagnosticInfo",
-  DaihonGuide2 = "DiagnosticHint",
-  DaihonGuide3 = "DiagnosticOk",
-  DaihonGuide4 = "DiagnosticWarn",
-  DaihonGuide5 = "Function",
-  DaihonGuide6 = "Constant",
+  Guide1 = "DiagnosticInfo",
+  Guide2 = "DiagnosticHint",
+  Guide3 = "DiagnosticOk",
+  Guide4 = "DiagnosticWarn",
+  Guide5 = "Function",
+  Guide6 = "Constant",
 }
 
 --- ラベルから線の色を決める（同じラベルはいつも同じ色）
@@ -32,12 +32,14 @@ local function guide_hl(key)
   for i = 1, #key do
     n = n + key:byte(i)
   end
-  return "DaihonGuide" .. (n % 6 + 1)
+  return "4iiiGuide" .. (n % 6 + 1)
 end
 
 function M.define_highlights()
   for name, link in pairs(LINKS) do
-    vim.api.nvim_set_hl(0, name, { link = link, default = true })
+    -- shortcut: 4iii* → Daihon* → 元の色。v0.1.0 の :hi DaihonShiji の上書きを効かせるため・次の大きい版で Daihon* を外す
+    vim.api.nvim_set_hl(0, "Daihon" .. name, { link = link, default = true })
+    vim.api.nvim_set_hl(0, "4iii" .. name, { link = "Daihon" .. name, default = true })
   end
 end
 
@@ -56,34 +58,34 @@ function M.render(buf, records, summary, issues)
   for _, r in ipairs(records) do
     local row, len = r.lnum - 1, #r.text
     if r.kind == "見出し" then
-      mark(buf, row, 0, len, "DaihonHeading")
+      mark(buf, row, 0, len, "4iiiHeading")
       local n = summary.headings[r.lnum]
       if n then
         vim.api.nvim_buf_set_extmark(buf, M.ns, row, 0, {
-          virt_text = { { "  " .. count.format(n) .. "文字", "DaihonCount" } },
+          virt_text = { { "  " .. count.format(n) .. "文字", "4iiiCount" } },
           virt_text_pos = "eol",
         })
       end
     elseif r.kind == "塊開始" or r.kind == "塊終了" then
-      mark(buf, row, 0, len, "DaihonBlock")
+      mark(buf, row, 0, len, "4iiiBlock")
       if summary.new_blocks and summary.new_blocks[r.lnum] then
         vim.api.nvim_buf_set_extmark(buf, M.ns, row, 0, {
-          virt_text = { { "  新しい塊（保存すると作ります）", "DaihonCount" } },
+          virt_text = { { "  新しい塊（保存すると作ります）", "4iiiCount" } },
           virt_text_pos = "eol",
         })
       end
     elseif r.kind == "範囲" then
-      mark(buf, row, 0, len, "DaihonRange")
+      mark(buf, row, 0, len, "4iiiRange")
     elseif r.type then
-      mark(buf, row, 0, len, r.type.hl or "DaihonShiji")
+      mark(buf, row, 0, len, r.type.hl or "4iiiShiji")
       if r.range then
-        mark(buf, row, r.range.col, len, "DaihonRange", 110)
+        mark(buf, row, r.range.col, len, "4iiiRange", 110)
       end
     elseif r.speaker_col then
-      mark(buf, row, r.speaker_col[1], r.speaker_col[2], "DaihonSpeaker")
+      mark(buf, row, r.speaker_col[1], r.speaker_col[2], "4iiiSpeaker")
     end
     for _, ref in ipairs(r.refs or {}) do
-      mark(buf, row, ref.s - 1, ref.e, "DaihonBlock", 120)
+      mark(buf, row, ref.s - 1, ref.e, "4iiiBlock", 120)
     end
     local depth = summary.depths and summary.depths[r.lnum]
     if depth then
@@ -105,7 +107,7 @@ function M.render(buf, records, summary, issues)
         or i.warn and vim.diagnostic.severity.WARN
         or vim.diagnostic.severity.ERROR,
       message = i.msg,
-      source = "daihon",
+      source = "4iii",
     }
   end
   vim.diagnostic.set(M.ns_diag, buf, diags)

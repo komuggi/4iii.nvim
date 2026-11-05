@@ -1,4 +1,4 @@
--- :checkhealth daihon — 使う前のつまずきを1画面で確かめる
+-- :checkhealth 4iii — 使う前のつまずきを1画面で確かめる
 local M = {}
 
 local h = vim.health
@@ -17,16 +17,16 @@ local function has_font(name)
 end
 
 function M.check()
-  h.start("daihon：nvim")
+  h.start("4iii：nvim")
   if vim.fn.has("nvim-0.10") == 1 then
     h.ok("Neovim " .. tostring(vim.version()))
   else
     h.error("Neovim 0.10 以上が要ります（今は " .. tostring(vim.version()) .. "）")
   end
 
-  h.start("daihon：PDF の書き出し")
-  local daihon = require("daihon")
-  local st = daihon.last_buf and daihon.state(daihon.last_buf)
+  h.start("4iii：PDF の書き出し")
+  local core = require("4iii")
+  local st = core.last_buf and core.state(core.last_buf)
   local cmd = st and st.cfg.export.pdf.command
   if cmd then
     h.ok("PDF を作るコマンド（setup で指定）：" .. table.concat(cmd, " "))
@@ -49,10 +49,10 @@ function M.check()
     h.info("フォントは確かめられませんでした")
   end
 
-  h.start("daihon：開いている台本")
+  h.start("4iii：開いている台本")
   if not st then
     h.info(
-      "台本（daihon.lua がある作品フォルダの .txt）を開いてから :checkhealth daihon を打つと、作品の設定も確かめます"
+      "台本（4iii.lua がある作品フォルダの .txt）を開いてから :checkhealth 4iii を打つと、作品の設定も確かめます"
     )
     return
   end
@@ -60,7 +60,7 @@ function M.check()
   if st.config_warning then
     h.warn(st.config_warning)
   else
-    h.ok("daihon.lua を読めました")
+    h.ok("4iii.lua を読めました")
   end
   local parts = vim.fs.joinpath(st.root, st.cfg.parts_dir)
   local n = #vim.fn.globpath(parts, "*.txt", false, true)

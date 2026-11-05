@@ -1,6 +1,6 @@
 -- 塊（{名前}）の操作：開く・閉じる・中身を見る・一覧から差し込む・保存で新しく作る
-local parse = require("daihon.parse")
-local count = require("daihon.count")
+local parse = require("4iii.parse")
+local count = require("4iii.count")
 
 local M = {}
 
@@ -85,14 +85,14 @@ function M.open(buf, st)
   end
   if parse.trim(r.text) ~= r.text:sub(ref.s, ref.e) then
     vim.notify(
-      "daihon: 行の途中の塊は開けません。{" .. ref.name .. "} だけの行にしてください",
+      "4iii: 行の途中の塊は開けません。{" .. ref.name .. "} だけの行にしてください",
       vim.log.levels.WARN
     )
     return true
   end
   local lines = read_part(st, ref.name)
   if not lines then
-    vim.notify("daihon: 未登録の塊です：" .. ref.name, vim.log.levels.WARN)
+    vim.notify("4iii: 未登録の塊です：" .. ref.name, vim.log.levels.WARN)
     return true
   end
   local out = { "{{" .. ref.name }
@@ -110,11 +110,11 @@ function M.close(buf, st)
     return false
   end
   if not b.last then
-    vim.notify("daihon: {{" .. b.name .. " を閉じる }} がありません", vim.log.levels.WARN)
+    vim.notify("4iii: {{" .. b.name .. " を閉じる }} がありません", vim.log.levels.WARN)
     return true
   end
   if not M.valid_name(b.name) then
-    vim.notify("daihon: この名前は塊に使えません：" .. b.name, vim.log.levels.WARN)
+    vim.notify("4iii: この名前は塊に使えません：" .. b.name, vim.log.levels.WARN)
     return true
   end
   local inner = vim.api.nvim_buf_get_lines(buf, b.first, b.last - 1, false)
@@ -126,7 +126,7 @@ function M.close(buf, st)
   if not saved then
     local path = write_part(st, b.name, inner)
     collapse()
-    vim.notify("daihon: 新しい塊を作りました：" .. rel(st, path))
+    vim.notify("4iii: 新しい塊を作りました：" .. rel(st, path))
     return true
   end
   if vim.deep_equal(saved, inner) then
@@ -146,7 +146,7 @@ function M.close(buf, st)
       elseif choice == both then
         write_part(st, b.name, inner)
         collapse()
-        vim.notify("daihon: 塊を書き換えました：" .. b.name)
+        vim.notify("4iii: 塊を書き換えました：" .. b.name)
       end
     end
   )
@@ -158,7 +158,7 @@ function M.toggle(buf, st)
   if M.close(buf, st) or M.open(buf, st) then
     return
   end
-  vim.notify("daihon: カーソルの所に塊がありません")
+  vim.notify("4iii: カーソルの所に塊がありません")
 end
 
 --- K：カーソルの塊の中身と文字数を小窓で出す
@@ -178,14 +178,14 @@ function M.hover(buf, st)
   end
   local lines = read_part(st, name)
   if not lines then
-    vim.notify("daihon: 未登録の塊です：" .. name, vim.log.levels.WARN)
+    vim.notify("4iii: 未登録の塊です：" .. name, vim.log.levels.WARN)
     return true
   end
   local ctx = count.context(st.cfg, function(n)
     return read_part(st, n)
   end)
   local title = (" %s · %s文字 "):format(name, count.format(ctx.part_count(name)))
-  vim.lsp.util.open_floating_preview(lines, "text", { border = "rounded", title = title, focus_id = "daihon_hover" })
+  vim.lsp.util.open_floating_preview(lines, "text", { border = "rounded", title = title, focus_id = "4iii_hover" })
   return true
 end
 
@@ -219,7 +219,7 @@ function M.pick(buf, st)
   local items = M.list(st)
   if #items == 0 then
     vim.notify(
-      "daihon: 塊がまだありません（"
+      "4iii: 塊がまだありません（"
         .. st.cfg.parts_dir
         .. "/ に .txt を置くか、{{名前 〜 }} で作る）"
     )
@@ -268,7 +268,7 @@ function M.create_new_on_save(buf, st)
       local b = M.block_at(records, r.lnum)
       if b and b.last and not M.valid_name(b.name) then
         vim.notify(
-          "daihon: この名前は塊に使えないので作りませんでした：" .. b.name,
+          "4iii: この名前は塊に使えないので作りませんでした：" .. b.name,
           vim.log.levels.WARN
         )
       elseif b and b.last and not read_part(st, b.name) then
@@ -278,7 +278,7 @@ function M.create_new_on_save(buf, st)
     end
   end
   if #made > 0 then
-    vim.notify("daihon: 新しい塊を作りました：" .. table.concat(made, "、"))
+    vim.notify("4iii: 新しい塊を作りました：" .. table.concat(made, "、"))
   end
 end
 

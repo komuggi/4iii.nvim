@@ -1,6 +1,6 @@
-local config = require("daihon.config")
-local parse = require("daihon.parse")
-local count = require("daihon.count")
+local config = require("4iii.config")
+local parse = require("4iii.parse")
+local count = require("4iii.count")
 
 local cfg = config.merge(config.defaults, {})
 
