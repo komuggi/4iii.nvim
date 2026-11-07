@@ -68,7 +68,10 @@ end, {
   desc = "4iii：pdf / html / md / docx / count / pick / toggle",
 })
 
--- 小文字の :dh でも打てるように（nvim のコマンドは大文字始まりの決まりなので、行の頭の dh だけ Dh に置き換える）
-vim.keymap.set("ca", "dh", function()
-  return (vim.fn.getcmdtype() == ":" and vim.fn.getcmdline() == "dh") and "Dh" or "dh"
-end, { expr = true, desc = "4iii: :dh → :Dh" })
+-- :4i で打つ（nvim のコマンドは大文字始まりの決まりなので、行の頭の 4i だけ Dh に置き換える）
+-- shortcut: :dh は v0.1.0 の打ち方のため残す・次の大きい版で外す
+for _, lhs in ipairs({ "4i", "dh" }) do
+  vim.keymap.set("ca", lhs, function()
+    return (vim.fn.getcmdtype() == ":" and vim.fn.getcmdline() == lhs) and "Dh" or lhs
+  end, { expr = true, desc = "4iii: :" .. lhs .. " → :Dh" })
+end

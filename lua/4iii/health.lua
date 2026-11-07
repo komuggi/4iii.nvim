@@ -33,7 +33,7 @@ function M.check()
   elseif vim.fn.executable("vivliostyle") == 1 then
     h.ok("vivliostyle が入っています")
   else
-    h.warn("vivliostyle が入っていません。:dh pdf を使うなら入れてください", {
+    h.warn("vivliostyle が入っていません。:4i pdf を使うなら入れてください", {
       "ターミナルで：npm install -g @vivliostyle/cli",
       vim.fn.executable("npm") == 0 and "npm もないので、先に Node.js を入れてください" or nil,
     })
@@ -69,9 +69,9 @@ function M.check()
 
   local snacks = pcall(require, "snacks")
   if snacks then
-    h.ok("snacks.nvim があるので、:dh pick で塊の中身を横に出します")
+    h.ok("snacks.nvim があるので、:4i pick で塊の中身を横に出します")
   else
-    h.info("snacks.nvim がないので、:dh pick は1行目つきの一覧になります")
+    h.info("snacks.nvim がないので、:4i pick は1行目つきの一覧になります")
   end
 end
 

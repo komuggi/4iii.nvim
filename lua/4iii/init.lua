@@ -672,7 +672,7 @@ function M.command(arg)
     local names = vim.tbl_keys(M.commands)
     table.sort(names)
     vim.notify(
-      "4iii: :Dh のあとに書けるのは " .. table.concat(names, " / ") .. " です",
+      "4iii: :4i のあとに書けるのは " .. table.concat(names, " / ") .. " です",
       vim.log.levels.WARN
     )
     return
